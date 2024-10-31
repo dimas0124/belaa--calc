@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Kalkulator - Bela Sapira - (242302012)</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(#0099FF, #000066);
+      color: black;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    div {
+      /* border: solid 1px red; */
+    }
+
+    #Kalkulator {
+      border: solid 1px #ccc;
+      padding: 10px;
+      background: linear-gradient(#ccf, #88f);
+      color: black;
+      min-width: 200px;
+    }
+
+    .wrapper {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .wrapper div {
+      width: 100%;
+      padding: 5px 10px;
+    }
+
+    #hasil, #btn-hitung {
+      font-size: 22px;
+    }
+
+    #operasi-temporer {
+      font-size: 9px;
+    }
+
+    .bg-abu { background: #999999; }
+    .bg-red { background: #c00000; }
+    .bg-dark-brown { background: #4a452a; }
+    .bg-brown { background: #974807; }
+    .bg-dark-blue { background: #376091; }
+    .bg-purple { background: #7030a0; }
+    .bg-green { background: #006600; }
+
+    #judul {
+      padding: 10px 0;
+    }
+
+    .tombol {
+      border: solid 1px #ccc;
+      box-shadow: 0 0 3px gray;
+    }
+
+    .tombol-aktif {
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .tombol-aktif:hover {
+      background: linear-gradient(#fcf, #f0f);
+      transform: scale(1.1);
+    }
+
+    .tombol-nonaktif {
+      box-shadow: none !important;
+    }
+  </style>
+</head>
+<body>
+  <h1>KalkulatorKu</h1>
+  <div id="div_center">
+    <div id="Kalkulator">
+      <div>Mafi Kalkulator By Bela Sapira</div>
+      <div class="wrapper" id="operasi-temporer">
+        <div class="tombol tombol-nonaktif bg-abu" id="input1">...</div>
+        <div class="tombol tombol-nonaktif bg-abu" id="operasi-selected">...</div>
+        <div class="tombol tombol-nonaktif bg-abu" id="input2">...</div>
+        <div class="tombol tombol-nonaktif bg-abu" id="hasil-temporer">...</div>
+      </div>
+      <div class="wrapper">
+        <div id="hasil" class="tombol tombol-aktif bg-abu">hasil</div>
+      </div>
+      <div id="blok-tombol">
+        <div class="wrapper">
+          <div class="tombol tombol-aktif tombol-clear bg-red">C</div>
+          <div class="tombol tombol-aktif toggle-negatif bg-dark-brown">+-</div>
+          <div class="tombol tombol-aktif tombol-faktorial bg-brown">!</div>
+          <div class="tombol tombol-aktif tombol-operasi bg-brown">^</div>
+        </div>
+        <div class="wrapper">
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">7</div>
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">8</div>
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">9</div>
+          <div class="tombol tombol-aktif tombol-operasi bg-brown">%</div>
+        </div>
+        <div class="wrapper">
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">4</div>
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">5</div>
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">6</div>
+          <div class="tombol tombol-aktif tombol-operasi bg-purple">/</div>
+        </div>
+        <div class="wrapper">
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">1</div>
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">2</div>
+          <div class="tombol tombol-aktif tombol-angka bg-dark-blue">3</div>
+          <div class="tombol tombol-aktif tombol-operasi bg-purple">x</div>
+        </div>
+        <div class="wrapper">
+          <div class="tombol tombol-aktif bg-dark-blue">0</div>
+          <div class="tombol tombol-aktif bg-dark-blue">.</div>
+          <div class="tombol tombol-aktif tombol-operasi bg-purple">+</div>
+          <div class="tombol tombol-aktif tombol-operasi bg-purple">-</div>
+        </div>
+        <div class="wrapper">
+          <div id="btn-hitung" class="tombol tombol-aktif bg-green">=</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let input1 = '';
+    let input2 = '';
+    let operator = '';
+
+    document.querySelectorAll('.tombol-angka').forEach(button => {
+      button.addEventListener('click', () => {
+        if (operator === '') {
+          input1 += button.textContent;
+          document.getElementById('input1').textContent = input1;
+        } else {
+          input2 += button.textContent;
+          document.getElementById('input2').textContent = input2;
+        }
+      });
+    });
+
+    document.querySelectorAll('.tombol-operasi').forEach(button => {
+      button.addEventListener('click', () => {
+        if (input1 !== '') {
+          operator = button.textContent;
+          document.getElementById('operasi-selected').textContent = operator;
+        }
+      });
+    });
+
+    document.getElementById('btn-hitung').addEventListener('click', () => {
+      let result;
+      const num1 = parseFloat(input1);
+      const num2 = parseFloat(input2);
+
+      switch (operator) {
+        case '+': result = num1 + num2; break;
+        case '-': result = num1 - num2; break;
+        case 'x': result = num1 * num2; break;
+        case '/': result = num2 !== 0 ? num1 / num2 : 'Error'; break;
+        case '%': result = num1 % num2; break;
+        case '^': result = Math.pow(num1, num2); break;
+        default: result = 'Error';
+      }
+
+      document.getElementById('hasil-temporer').textContent = result;
+      input1 = result.toString();
+      input2 = '';
+      operator = '';
+    });
+
+    document.querySelector('.tombol-clear').addEventListener('click', () => {
+      input1 = '';
+      input2 = '';
+      operator = '';
+      document.getElementById('input1').textContent = '...';
+      document.getElementById('input2').textContent = '...';
+      document.getElementById('operasi-selected').textContent = '...';
+      document.getElementById('hasil-temporer').textContent = '...';
+    });
+  </script>
+</body>
+</html>
